@@ -10,23 +10,18 @@ function setOperator(operator) {
     triggerCalculation();
 }
 
-function selectNumber(number) {
-    if (activeInputField) {
-        const currentInput = document.getElementById(activeInputField);
-        if (currentInput.value.length < 2) {
-            currentInput.value += number;
-        }
-        if (currentInput.value.length === 2 && activeInputField === 'num1') {
-            // Move focus to num2 when num1 is full
-            activeInputField = 'num2';
-            document.getElementById('num2').focus();
-        }
-        triggerCalculation();
-    }
-}
-
 function validateInput(inputField) {
     inputField.value = inputField.value.replace(/[^0-9]/g, '').slice(0, 2);
+    triggerCalculation();
+}
+
+function selectNumber(number) {
+    const activeField = document.getElementById(activeInputField);
+    
+    // Only add the number if the field has less than 2 digits
+    if (activeField.value.length < 2) {
+        activeField.value += number;
+    }
     triggerCalculation();
 }
 
@@ -45,13 +40,12 @@ function clearField(field) {
     triggerCalculation();
 }
 
-// Set the active field when clicked
 function setActiveField(field) {
     document.getElementById('num1').classList.remove('active-field');
     document.getElementById('num2').classList.remove('active-field');
     document.getElementById(field).classList.add('active-field');
     activeInputField = field;
-    document.getElementById(field).focus();
+    document.getElementById(field).focus(); 
 }
 
 // Function to trigger calculation when all inputs are filled
